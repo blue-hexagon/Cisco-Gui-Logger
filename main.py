@@ -1,3 +1,5 @@
+from os.path import basename
+
 from netmiko import *
 import os
 import sys
@@ -5,8 +7,9 @@ import logging
 from datetime import date
 from datetime import datetime
 from program_config import *
+from zipfile import ZipFile
 
-if __name__ == '__main__':
+def run():
     prg_cfg = ProgramConfig()
 
     OUTPUT_DIR = './cdr_output'
@@ -81,3 +84,18 @@ if __name__ == '__main__':
         else:
             logging.warning("No output returned. Did you toggle all debug flags off?")
         connection.disconnect()
+
+
+    file_paths = []
+    zip_dir = CURRENT_TIME_DIR
+    for root, directories, files in os.walk(zip_dir):
+        for filename in files:
+            filepath = os.path.join(root, filename)
+            file_paths.append(filepath)
+
+    for file_name in file_paths:
+        print(file_name)
+
+    with ZipFile(os.path.join(CURRENT_TIME_DIR,'files.zip'), 'w') as zip:
+        for file in file_paths:
+            zip.write(file,arcname=basename(file)+'.txt')
