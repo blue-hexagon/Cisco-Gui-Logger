@@ -3,12 +3,9 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter import Menu
-# def clicked():
-#    label.configure(text="Button was clicked !!")
 import cisco_management
 from program_config import *
 import sys
-
 
 
 class IORedirector(object):
@@ -111,4 +108,3 @@ class TkinterInitializer():
     def add_statusbar(self):
         statusbar = Label(self.statusbar_panel, text="on the way…", bd=1, relief=tkinter.SUNKEN, anchor=tkinter.W)
         statusbar.pack(side=tkinter.BOTTOM, fill=tkinter.X, expand=1)
-
