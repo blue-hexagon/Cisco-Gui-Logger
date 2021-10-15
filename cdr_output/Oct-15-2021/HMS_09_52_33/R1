@@ -1,0 +1,135 @@
+*** Gathering Running Configuration File Data ***
+Building configuration...
+
+Current configuration : 2071 bytes
+!
+! Last configuration change at 08:34:21 UTC Thu Oct 14 2021 by admin
+version 15.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name monster.local
+ip cef
+ipv6 unicast-routing
+ipv6 dhcp pool IPV6-STATELESS
+ dns-server 2001:DB8:12:2::4
+ domain-name monster.com
+!
+ipv6 cef
+multilink bundle-name authenticated
+!
+!
+!
+license udi pid CISCO1941/K9 sn FCZ194071JE
+!
+!
+username admin privilege 15 secret 5 $1$Dls/$GnxTSyUYlWwd9ASGz/UAL0
+!
+redundancy
+!
+!
+ip ssh version 2
+!
+!
+!
+!
+interface Loopback1
+ no ip address
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+ ipv6 address FE80:DB8:12:2::1 link-local
+ ipv6 address 2001:DB8:12:2::1/64
+ ipv6 enable
+ ipv6 nd other-config-flag
+ ipv6 dhcp server IPV6-STATELESS
+ ipv6 ospf 1 area 0
+!
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ipv6 address 2001:DB8:12:20::1/64
+ ipv6 nd other-config-flag
+ ipv6 dhcp server IPV6-STATELESS
+ ipv6 ospf 1 area 0
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ ipv6 address FE80:DB8:12:1::1 link-local
+ ipv6 address 2001:DB8:12:1::1/64
+ ipv6 ospf 1 area 0
+!
+interface Serial0/0/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+router ospf 1
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+ipv6 router ospf 1
+ router-id 10.10.10.10
+ passive-interface GigabitEthernet0/0
+!
+!
+!
+!
+control-plane
+!
+!
+banner motd ^C UNAHTORIZED ACCESS TO THIS DEVICE IS PROHIBITED ^C
+!
+line con 0
+ exec-timeout 12 30
+ logging synchronous
+ login local
+line aux 0
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ exec-timeout 12 30
+ logging synchronous
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+!
+end
