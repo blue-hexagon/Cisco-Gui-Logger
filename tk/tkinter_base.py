@@ -4,7 +4,9 @@ from tkinter import scrolledtext
 from cisco_manager.program_config import *
 from cisco_manager.cisco_management import *
 from tk.gui_component.config_panel import ConfigPanel, Checkbox
+from tk.gui_component.control_button_panel import ControlButtonPanel
 from tk.gui_component.hosts_panel import HostPanel
+from tk.gui_component.io_panel import IOPanel
 from tk.gui_component.menubar import Menubar
 from tk.gui_component.statusbar import Statusbar
 
@@ -41,24 +43,12 @@ class TkinterInitializer():
         self.statusbar_panel.grid(column=0, row=10, columnspan=80, sticky="we")
 
         self.statusbar = Statusbar(self.statusbar_panel)
-        self.configuration_panel = ConfigPanel(self.config_panel, self.statusbar)
         self.menubar = Menubar(self.root)
+        self.checkbox_panel = ConfigPanel(self.config_panel, self.statusbar)
+        self.control_button_panel = ControlButtonPanel(self.config_panel)
         self.hosts_panel = HostPanel(self.hosts_panel, self.program_config, self.device_manager)
+        self.io_panel = IOPanel(self.logging_panel)
 
-        self.create_control_buttons()
-        output_textbox = scrolledtext.ScrolledText(self.logging_panel, width=120, relief=GROOVE)
-        output_textbox.grid(column=0, row=0, sticky="news")
-        input_textbox = Entry(self.logging_panel, width=120, relief=GROOVE)
-        input_textbox.grid(column=0, row=1, ipady=4, pady=4, sticky="news")
-        # sys.stdout = StdoutRedirector(output_textbox) # TODO: Why this crashes?
-        # sys.stderr = StdoutRedirector(output_textbox) # TODO: Why this crashes?
 
         self.root.mainloop()
 
-    def create_control_buttons(self):
-        self.buttons_pane = PanedWindow(self.config_panel)
-        self.buttons_pane.grid(column=0, row=1, columnspan=80, sticky="we")
-        btn_clear_checkboxes = Button(self.buttons_pane, text="Clear All Checkboxes", relief=GROOVE, command=Checkbox.clear_checkboxes)
-        btn_clear_checkboxes.grid(column=1, row=1, padx=2, sticky="news")
-        # btn_reset_equipment = Button(self.buttons_pane, text="Reset Equipment", relief=GROOVE)
-        # btn_reset_equipment.grid(column=2, row=1, padx=2, sticky="e")
