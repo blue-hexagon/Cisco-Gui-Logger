@@ -4,8 +4,12 @@ from tkinter import ttk, messagebox
 from tkinter import scrolledtext
 from tkinter import Menu
 import cisco_management
+import tk_gui_element
 from program_config import *
 import sys
+
+from tk_gui_element.statusbar import Statusbar
+from tk_gui_element.config_panel import ConfigPanel
 
 
 class IORedirector(object):
@@ -28,31 +32,25 @@ class TkinterInitializer():
         self.window.title("Cisco Debug Collector")
         self.prgcfg = ProgramConfig()
 
-        self.config_panel = PanedWindow()
-        self.hosts_panel = PanedWindow()
-        self.logging_panel = PanedWindow()
+        self.config_panel = LabelFrame(text="", padx=4, pady=4)
+        self.hosts_panel = LabelFrame(text="IPv4/6 Hosts", padx=4, pady=4)
+        self.logging_panel = LabelFrame(text="IO Direction", padx=4, pady=4)
         self.statusbar_panel = PanedWindow()
 
-        self.config_panel.grid(column=0, row=0, columnspan=80, sticky="we")
-        self.hosts_panel.grid(column=0, row=1)
-        self.logging_panel.grid(column=1, row=1)
+        self.config_panel.grid(column=0, row=0, columnspan=80, sticky="we", padx=4, pady=4)
+        self.hosts_panel.grid(column=0, row=1, padx=4, pady=4)
+        self.logging_panel.grid(column=1, row=1, padx=4, pady=4, sticky="news")
         self.statusbar_panel.grid(column=0, row=10, columnspan=80, sticky="we")
-
-        self.config_hosts_input = PanedWindow(self.hosts_panel)
-        self.config_hosts_input.pack(fill=tkinter.X, expand=1)
-
-        logging_output = PanedWindow(self.logging_panel)
-        logging_output.pack(fill=tkinter.BOTH, expand=1)
-
-        self.create_config_checkboxes()
+        self.statusbar = Statusbar(self.statusbar_panel)
+        self.configuration_panel = ConfigPanel(self.config_panel,self.statusbar)
         self.add_menu()
-        self.add_statusbar()
+
         self.create_control_buttons()
 
-        output_textbox = scrolledtext.ScrolledText(logging_output, width=120,relief=GROOVE)
+        output_textbox = scrolledtext.ScrolledText(self.logging_panel, width=120, relief=GROOVE)
         output_textbox.grid(column=0, row=0, sticky="news")
-        input_textbox = Entry(logging_output, width=120, relief=GROOVE)
-        input_textbox.grid(column=0, row=1, ipady=4, sticky="news")
+        input_textbox = Entry(self.logging_panel, width=120, relief=GROOVE)
+        input_textbox.grid(column=0, row=1, ipady=4, sticky="we")
         # sys.stdout = StdoutRedirector(output_textbox) # TODO: Why this crashes?
         # sys.stderr = StdoutRedirector(output_textbox) # TODO: Why this crashes?
 
@@ -61,19 +59,19 @@ class TkinterInitializer():
 
     def create_hosts_entry_panel_content(self):
         hosts = []
-        Label(self.config_hosts_input, text="IPv4/6 address list").grid(column=0, row=0)
-        for i in range(0, 14):
-            host = Entry(self.config_hosts_input, width=20, relief=GROOVE)
+        length = 13
+        for i in range(0, length):
+            host = Entry(self.hosts_panel, width=20, relief=GROOVE)
             host.grid(column=0, row=i + 1, ipady=3, pady=1, padx=3)
-            btn = Button(self.config_hosts_input, text="Run", relief=GROOVE)
+            btn = Button(self.hosts_panel, text="Run", relief=GROOVE)
             btn.grid(column=1, row=i + 1, pady=1)
             if len(self.prgcfg.host_list) > 0:
                 host.insert(0, self.prgcfg.host_list.pop())
             hosts.append(host)
-        btn_run = Button(self.config_hosts_input, text="Run on All", relief=GROOVE, command=cisco_management.run)
-        btn_run.grid(column=0, columnspan=10, row=15, ipady=1, pady=2, sticky="we")
-        btn = Button(self.config_hosts_input, relief=GROOVE, text="Clear Hosts")
-        btn.grid(column=0, columnspan=10, row=16, ipady=1, pady=2, sticky="we")
+        btn_run = Button(self.hosts_panel, text="Run on All", relief=GROOVE, command=cisco_management.run)
+        btn_run.grid(column=0, columnspan=10, row=length + 1, ipady=1, pady=2, sticky="we")
+        btn = Button(self.hosts_panel, relief=GROOVE, text="Clear Hosts")
+        btn.grid(column=0, columnspan=10, row=length + 2, ipady=1, pady=2, sticky="we")
 
     def create_control_buttons(self):
         self.buttons_pane = PanedWindow(self.config_panel)
@@ -81,43 +79,10 @@ class TkinterInitializer():
         # self.buttons_pane.columnconfigure(tuple(range(80)), weight=1)
         # self.buttons_pane.rowconfigure(tuple(range(80)), weight=1)
 
-        btn_clear_checkboxes = Button(self.buttons_pane, text="Clear All Checkboxes",relief=GROOVE)
+        btn_clear_checkboxes = Button(self.buttons_pane, text="Clear All Checkboxes", relief=GROOVE)
         btn_clear_checkboxes.grid(column=1, row=1, padx=2, sticky="news")
-        btn_reset_equipment = Button(self.buttons_pane, text="Reset Equipment",relief=GROOVE)
-        btn_reset_equipment.grid(column=2, row=1, padx=2, sticky="news")
-
-    def create_config_checkboxes(self):
-        self.config_checkboxes1 = PanedWindow(self.config_panel)
-        self.config_checkboxes1.grid(column=0, row=0, sticky="ns")
-        self.config_checkboxes2 = PanedWindow(self.config_panel)
-        self.config_checkboxes2.grid(column=1, row=0, sticky="ns")
-
-        chk_running_config = BooleanVar()
-        chk_startup_config = BooleanVar()
-        chk_system = BooleanVar()
-
-        chk_dhcp = BooleanVar()
-        chk_vtp = BooleanVar()
-        chk_vlan = BooleanVar()
-        chk_etherchannel = BooleanVar()
-
-        chk_w_running_config = Checkbutton(self.config_checkboxes1, text="Startup Config", var=chk_startup_config)
-        chk_w_startup_config = Checkbutton(self.config_checkboxes1, text="Running Config", var=chk_running_config)
-        chk_w_system = Checkbutton(self.config_checkboxes1, text="System", var=chk_system)
-
-        chk_w_dhcp = Checkbutton(self.config_checkboxes2, text="DHCP", var=chk_dhcp)
-        chk_w_vtp = Checkbutton(self.config_checkboxes2, text="VTP", var=chk_vtp)
-        chk_w_vlan = Checkbutton(self.config_checkboxes2, text="VLAN", var=chk_vlan)
-        chk_w_etherchannel = Checkbutton(self.config_checkboxes2, text="Etherchannel", var=chk_etherchannel)
-
-        chk_w_running_config.grid(column=0, row=0, sticky="w")
-        chk_w_startup_config.grid(column=0, row=1, sticky="w")
-        chk_w_system.grid(column=0, row=2, sticky="w")
-
-        chk_w_dhcp.grid(column=0, row=0, sticky="w")
-        chk_w_vtp.grid(column=0, row=1, sticky="w")
-        chk_w_vlan.grid(column=0, row=2, sticky="w")
-        chk_w_etherchannel.grid(column=0, row=3, sticky="w")
+        btn_reset_equipment = Button(self.buttons_pane, text="Reset Equipment", relief=GROOVE)
+        btn_reset_equipment.grid(column=2, row=1, padx=2, sticky="e")
 
     def add_menu(self):
         def show_help():
@@ -139,6 +104,4 @@ class TkinterInitializer():
 
         self.window.config(menu=menubar)
 
-    def add_statusbar(self):
-        statusbar = Label(self.statusbar_panel, text="on the way…", bd=1, relief=tkinter.SUNKEN, anchor=tkinter.W)
-        statusbar.pack(side=tkinter.BOTTOM, fill=tkinter.X, expand=1)
+
