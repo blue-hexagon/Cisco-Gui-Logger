@@ -1,6 +1,3 @@
-from tk_gui_element import config_panel
-
-
 class ProgramConfig:
     def __init__(self):
         self.LOG_TO_FILE = False  # Toggle flag - logs to stdout if not to file.
@@ -13,7 +10,7 @@ class ProgramConfig:
         self.ERASE_EQUIPMENT = False # WARNING : Make the user type in a diceware password or something...
 
 
-        self.running_config = config_panel.ConfigPanel.running_config
+
 
         self.default_conf = {
             'device_type': 'cisco_ios',

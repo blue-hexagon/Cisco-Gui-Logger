@@ -19,7 +19,6 @@ class Checkbox():
             Checkbox.boxes[i].deselect()
 
 class ConfigPanel:
-    running_config = False
     def __init__(self, config_panel, statusbar):
         self.config_checkboxes1 = PanedWindow(config_panel)
         self.config_checkboxes1.grid(column=0, row=0, sticky="ns")
