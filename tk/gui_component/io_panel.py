@@ -1,7 +1,8 @@
 from tkinter import *
 from tkinter import scrolledtext
 
-class IOPanel():
+
+class IOPanel:
     def __init__(self, logging_panel):
         output_textbox = scrolledtext.ScrolledText(logging_panel, width=120, relief=GROOVE)
         output_textbox.grid(column=0, row=0, sticky="news")

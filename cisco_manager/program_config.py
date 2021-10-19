@@ -7,10 +7,7 @@ class ProgramConfig:
         self.SHOW_VTP = False
         self.SHOW_VLAN = False
         self.SHOW_INTERFACES_BRIEF = False
-        self.ERASE_EQUIPMENT = False # WARNING : Make the user type in a diceware password or something...
-
-
-
+        self.ERASE_EQUIPMENT = False  # WARNING : Make the user type in a diceware password or something...
 
         self.default_conf = {
             'device_type': 'cisco_ios',

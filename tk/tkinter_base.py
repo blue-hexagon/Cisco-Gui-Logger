@@ -1,9 +1,7 @@
 import tkinter
 from tkinter import *
-from tkinter import scrolledtext
-from cisco_manager.program_config import *
 from cisco_manager.cisco_management import *
-from tk.gui_component.config_panel import ConfigPanel, Checkbox
+from tk.gui_component.config_panel import ConfigPanel
 from tk.gui_component.control_button_panel import ControlButtonPanel
 from tk.gui_component.hosts_panel import HostPanel
 from tk.gui_component.io_panel import IOPanel
@@ -12,22 +10,22 @@ from tk.gui_component.statusbar import Statusbar
 
 
 class IORedirector(object):
-    '''A general class for redirecting I/O to this Text widget.'''
+    # A general class for redirecting I/O to this Text widget.
 
     def __init__(self, text_area):
         self.text_area = text_area
 
 
 class StdoutRedirector(IORedirector):
-    '''A class for redirecting stdout to this Text widget.'''
+    # A class for redirecting stdout to this Text widget.
 
-    def write(self, stri):
-        self.text_area.insert(tkinter.INSERT, stri)
+    def write(self, string):
+        self.text_area.insert(tkinter.INSERT, string)
 
 
-class TkinterInitializer():
+class TkinterInitializer:
     def __init__(self):
-        self.device_manager = DeviceManagemer()
+        self.device_manager = DeviceManager()
         self.root = Tk()
         self.root.title("Cisco Debug Collector")
         self.program_config = ProgramConfig()
@@ -46,9 +44,7 @@ class TkinterInitializer():
         self.menubar = Menubar(self.root)
         self.checkbox_panel = ConfigPanel(self.config_panel, self.statusbar)
         self.control_button_panel = ControlButtonPanel(self.config_panel)
-        self.hosts_panel = HostPanel(self.hosts_panel, self.program_config, self.device_manager)
+        self.hosts_panel = HostPanel(self.hosts_panel, self.program_config, self.device_manager, 13)
         self.io_panel = IOPanel(self.logging_panel)
 
-
         self.root.mainloop()
-
