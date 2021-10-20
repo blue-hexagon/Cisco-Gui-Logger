@@ -9,18 +9,6 @@ from tk.gui_component.menubar import Menubar
 from tk.gui_component.statusbar import Statusbar
 
 
-class IORedirector(object):
-    # A general class for redirecting I/O to this Text widget.
-
-    def __init__(self, text_area):
-        self.text_area = text_area
-
-
-class StdoutRedirector(IORedirector):
-    # A class for redirecting stdout to this Text widget.
-
-    def write(self, string):
-        self.text_area.insert(tkinter.INSERT, string)
 
 
 class TkinterInitializer:

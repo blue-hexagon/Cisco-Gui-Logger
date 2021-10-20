@@ -1,27 +1,42 @@
 class ProgramConfig:
-    def __init__(self):
-        self.LOG_TO_FILE = False  # Toggle flag - logs to stdout if not to file.
-        self.WRITE_CONFIG_TO_STARTUP = False
-        self.SHOW_RUNNING_CONFIG = True
-        self.SHOW_DHCP = False
-        self.SHOW_VTP = False
-        self.SHOW_VLAN = False
-        self.SHOW_INTERFACES_BRIEF = False
-        self.ERASE_EQUIPMENT = False  # WARNING : Make the user type in a diceware password or something...
+    log_to_file = False  # Toggle flag - logs to stdout if not to file.
+    write_config_to_startup = False
+    show_running_config = True
+    show_startup_config = True
+    show_dhcp = False
+    show_vtp = False
+    show_vlan = False
+    show_cdp = False
+    show_ntp = True
+    show_system = True
+    show_hardware = False
+    show_users = False
+    show_logging = False
+    show_tech_support = False
+    show_mac_table = False
+    show_arp = False
+    show_routes = False
+    show_etherchannel = False
+    show_protocols = False
+    show_spanning_tree = False
+    show_acls = False
+    show_interfaces_brief = False
+    erase_equipment = False  # TODO : Make the user type in a diceware password or something...
 
-        self.default_conf = {
-            'device_type': 'cisco_ios',
-            'username': 'admin',
-            'password': 'admin',
-            'port': 22,
-            # 'secret': 'secret',  # optional, defaults to ''
-        }
+    default_conf = {
+        'device_type': 'cisco_ios',
+        'username': 'admin',
+        'password': 'admin',
+        'port': 22,
+        # 'secret': 'secret',  # optional, defaults to ''
+    }
 
-        self.host_list = [
-            '2001:db8:12:2::1',
-            '2001:db8:12:2::2',
-            '2001:db8:12:2::3'
-        ]
+    host_list = [
+        '2001:db8:12:2::1',
+        '2001:db8:12:2::2',
+        '2001:db8:12:2::3'
+    ]
 
-    def logger_output_stream_is_file(self):
-        return self.LOG_TO_FILE
+    @classmethod
+    def logger_output_stream_is_file(cls):
+        return cls.log_to_file
