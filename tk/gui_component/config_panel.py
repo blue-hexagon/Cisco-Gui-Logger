@@ -6,30 +6,21 @@ from cisco_manager.program_config import ProgramConfig
 class Checkbox:
     boxes = []
 
-    def __init__(self, parent, statusbar, program_config_elem, elem_text, statusbar_text, col, row):
+    def __init__(self, parent, statusbar, cisco_show_setting, elem_text, statusbar_text, col, row):
         self.var = BooleanVar()
-        self.var.set(True if program_config_elem is True else False)
-        self.elem = Checkbutton(parent, text=elem_text, var=self.var)
-        self.elem.config(command=lambda elem1=program_config_elem,elem2=self.elem: Checkbox.toggle_program_config_elem_value(elem1,elem2))
-        self.elem.bind("<Enter>", lambda event, text=statusbar_text: statusbar.set_statusbar_text(event, text))
-        # if program_config_elem is True:
-        #     self.elem.select()
-        # else:
-        #     self.elem.deselect()
-        self.elem.bind("<Leave>", statusbar.clear_statusbar)
-        self.elem.grid(column=col, row=row, sticky="w")
-        Checkbox.boxes.append(self.elem)
+        self.var.set(True if cisco_show_setting is True else False)
+        self.checkbox = Checkbutton(parent, text=elem_text, var=self.var, onvalue=True, offvalue=False)
+        self.checkbox.config(
+            command=lambda show_setting_flag=cisco_show_setting, checkbox=self.var,checkbox_text=elem_text: Checkbox.toggle_program_config_elem_value(show_setting_flag, checkbox,checkbox_text))
+        self.checkbox.bind("<Enter>", lambda event, text=statusbar_text: statusbar.set_statusbar_text(event, text))
+        self.checkbox.bind("<Leave>", statusbar.clear_statusbar)
+        self.checkbox.grid(column=col, row=row, sticky="w")
+        Checkbox.boxes.append(self.checkbox)
 
     @staticmethod
-    def toggle_program_config_elem_value(program_config_elem,elem):
-        print(program_config_elem)
-        if program_config_elem:
-            elem.deselect()
-        else:
-            elem.select()
-        program_config_elem = not program_config_elem
-
-        logging.info(f"Toggle {program_config_elem}")
+    def toggle_program_config_elem_value(show_setting_flag, checkbox,checkbox_text):
+        show_setting_flag = checkbox.get()
+        logging.info(f"Toggle {checkbox_text}: {show_setting_flag, checkbox.get()}")
 
     @staticmethod
     def clear_checkboxes():
