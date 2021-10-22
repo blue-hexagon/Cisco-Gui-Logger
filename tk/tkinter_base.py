@@ -1,5 +1,7 @@
 import tkinter
 from tkinter import *
+from tkinter import ttk
+
 from cisco_manager.cisco_management import *
 from tk.gui_component.config_panel import ConfigPanel
 from tk.gui_component.control_button_panel import ControlButtonPanel

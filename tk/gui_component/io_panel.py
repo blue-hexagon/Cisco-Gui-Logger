@@ -1,19 +1,23 @@
 import tkinter
 from tkinter import *
 from tkinter import scrolledtext
-
-class IORedirector(object):
-    # A general class for redirecting I/O to this Text widget.
-
-    def __init__(self, text_area):
-        self.text_area = text_area
+import sys
 
 
-class StdoutRedirector(IORedirector):
-    # A class for redirecting stdout to this Text widget.
+class Redirect():
 
-    def write(self, string):
-        self.text_area.insert(tkinter.INSERT, string)
+    def __init__(self, widget, autoscroll=True):
+        self.widget = widget
+        self.autoscroll = autoscroll
+
+    def write(self, text):
+        self.widget.insert('end', text)
+        if self.autoscroll:
+            self.widget.see("end")  # autoscroll
+
+    def flush(self):
+        pass
+
 
 class IOPanel:
     def __init__(self, logging_panel):
@@ -21,5 +25,6 @@ class IOPanel:
         output_textbox.grid(column=0, row=0, sticky="news")
         input_textbox = Entry(logging_panel, width=120, relief=GROOVE)
         input_textbox.grid(column=0, row=1, ipady=4, pady=4, sticky="news")
-        # sys.stdout = StdoutRedirector(output_textbox) # TODO: Why this crashes?
+        sys.stdout = Redirect(output_textbox)  # TODO: Why this crashes?
+
         # sys.stderr = StdoutRedirector(output_textbox) # TODO: Why this crashes?
