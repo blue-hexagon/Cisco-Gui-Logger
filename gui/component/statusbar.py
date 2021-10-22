@@ -9,9 +9,9 @@ class Statusbar:
         self.statusbar.pack(side=tkinter.BOTTOM, fill=tkinter.X, expand=1)
 
     def set_statusbar_text(self, event, text):
-        logging.info(f"Setting statusbar helper text: {text}")
+        # logging.info(f"Setting statusbar helper text: {text}")
         self.statusbar.configure(text=text)
 
     def clear_statusbar(self, event):
-        logging.info(f"Clearing statusbar helper text.")
+        # logging.info(f"Clearing statusbar helper text.")
         self.statusbar.configure(text="")

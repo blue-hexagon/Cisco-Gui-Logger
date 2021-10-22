@@ -54,26 +54,29 @@ class DeviceManager:
                     hostname = connection.find_prompt()[:-1]
                     logging.info(f"Connected to {hostname}")
                     output_filename = os.path.join(current_time_dir, hostname)
-                    if ProgramConfig.write_config_to_startup:
-                        logging.info('Saving running-config into startup-config')
-                        connection.send_command('write')
-                    if ProgramConfig.show_running_config:
-                        output += "*** Gathering Running Configuration File Data ***\n"
-                        output += connection.send_command('show run', use_textfsm=True)
-                    if ProgramConfig.show_vtp:
-                        output += "\n\n*** VTP Configuration ***\n"
-                        output += connection.send_command('show vtp status')
-                    if ProgramConfig.show_vlan:
-                        output += "\n\n*** Data from flash:vlan.dat ***\n"
-                        output += connection.send_command('show vlan-switch')
-                    if ProgramConfig.show_interfaces_brief:
-                        output += "\n\n*** Interfaces Configuration ***\n"
-                        output += connection.send_command('show ipv6 int br')
-                    if ProgramConfig.show_dhcp:
-                        output += "\n\n*** DHCP Configuration ***\n"
-                        output += connection.send_command('show ip dhcp pool')
-                        output += connection.send_command('show ip dhcp binding')
-                        output += connection.send_command('show ip dhcp server statistics')
+                    for config_object in ProgramConfig.all_configuration_objects:
+                        output+= config_object.text_divider
+                        output+= connection.send_command(config_object.ios_command)
+                    # if ProgramConfig.write_config_to_startup:
+                    #     logging.info('Saving running-config into startup-config')
+                    #     connection.send_command('write')
+                    # if ProgramConfig.show_running_config:
+                    #     output += "\n\n*** Gathering Running Configuration File Data ***\n"
+                    #     output += connection.send_command('show run', use_textfsm=True)
+                    # if ProgramConfig.show_vtp:
+                    #     output += "\n\n*** VTP Configuration ***\n"
+                    #     output += connection.send_command('show vtp status')
+                    # if ProgramConfig.show_vlan:
+                    #     output += "\n\n*** Data from flash:vlan.dat ***\n"
+                    #     output += connection.send_command('show vlan-switch')
+                    # if ProgramConfig.show_interfaces_brief:
+                    #     output += "\n\n*** Interfaces Configuration ***\n"
+                    #     output += connection.send_command('show ipv6 int br')
+                    # if ProgramConfig.show_dhcp:
+                    #     output += "\n\n*** DHCP Configuration ***\n"
+                    #     output += connection.send_command('show ip dhcp pool')
+                    #     output += connection.send_command('show ip dhcp binding')
+                    #     output += connection.send_command('show ip dhcp server statistics')
                     if len(output) > 1:
                         self.write_device_info_to_file(hostname, output, output_filename)
                     else:
