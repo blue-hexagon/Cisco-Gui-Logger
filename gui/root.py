@@ -1,14 +1,12 @@
-import tkinter
 from tkinter import *
-from tkinter import ttk
 
-from cisco_manager.cisco_management import *
-from tk.gui_component.config_panel import ConfigPanel
-from tk.gui_component.control_button_panel import ControlButtonPanel
-from tk.gui_component.hosts_panel import HostPanel
-from tk.gui_component.io_panel import IOPanel
-from tk.gui_component.menubar import Menubar
-from tk.gui_component.statusbar import Statusbar
+from cisco_director import *
+from gui.component.config_panel import ConfigPanel
+from gui.component.control_panel import ControlButtonPanel
+from gui.component.host_panel import HostPanel
+from gui.component.io_panel import IOPanel
+from gui.component.menubar import Menubar
+from gui.component.statusbar import Statusbar
 
 
 

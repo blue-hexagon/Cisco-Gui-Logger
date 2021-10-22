@@ -1,6 +1,6 @@
 import logging
 from tkinter import *
-from cisco_manager.program_config import ProgramConfig as PC
+from state_handler import ProgramConfig as PC
 
 
 class Checkbox:

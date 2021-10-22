@@ -1,6 +1,6 @@
 from tkinter import *
 
-from tk.gui_component.config_panel import Checkbox
+from gui.component.config_panel import Checkbox
 
 
 class ControlButtonPanel:

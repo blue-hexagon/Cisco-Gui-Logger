@@ -1,4 +1,4 @@
-from tk.tkinter_base import TkinterInitializer
+from gui.root import TkinterInitializer
 
 if __name__ == "__main__":
     TkinterInitializer()

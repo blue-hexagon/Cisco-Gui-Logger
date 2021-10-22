@@ -8,16 +8,16 @@ from datetime import date
 from datetime import datetime
 from zipfile import ZipFile
 
-from cisco_manager.program_config import ProgramConfig
+from state_handler import ProgramConfig
 
 
 class DeviceManager:
     def __init__(self):
-        self.output_base_dir = '../cdr_output'
+        self.output_base_dir = 'cdr_output'
         self.current_date_dir = os.path.join(self.output_base_dir, date.today().strftime("%b-%d-%Y"))
 
         if ProgramConfig.logger_output_stream_is_file():
-            logging.basicConfig(filename='../cdr.log', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
+            logging.basicConfig(filename='cdr.log', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
         else:
             logging.basicConfig(stream=sys.stdout, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 
