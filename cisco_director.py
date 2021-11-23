@@ -17,9 +17,11 @@ class DeviceManager:
         self.current_date_dir = os.path.join(self.output_base_dir, date.today().strftime("%b-%d-%Y"))
 
         if ProgramConfig.logger_output_stream_is_file():
-            logging.basicConfig(filename='cdr.log', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
+            logging.basicConfig(filename='cdr.log', format='%(asctime)s - %(levelname)s - %(message)s',
+                                level=logging.INFO)
         else:
-            logging.basicConfig(stream=sys.stdout, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
+            logging.basicConfig(stream=sys.stdout, format='%(asctime)s - %(levelname)s - %(message)s',
+                                level=logging.INFO)
 
         try:
             os.mkdir(self.output_base_dir)
@@ -32,9 +34,13 @@ class DeviceManager:
         except FileExistsError:
             logging.info("Directory already created for current day - continuing.")
 
+    def run_single(self):
+        for host in ProgramConfig.host_list:
+            print(host.get())
+
     def run(self):
         current_time_dir = os.path.join(self.current_date_dir, datetime.now().strftime("HMS_%H_%M_%S"))
-
+        debug_files_exists = False
         try:
             os.mkdir(current_time_dir)
         except FileExistsError:
@@ -44,46 +50,31 @@ class DeviceManager:
             if ProgramConfig.erase_equipment:
                 for host in range(0, len(ProgramConfig.host_list)):
                     # TODO
-                    connection = ConnectHandler(**ProgramConfig.default_conf, host=ProgramConfig.host_list.pop())
+                    connection = ConnectHandler(**ProgramConfig.default_conf, host=ProgramConfig.host_list[host])
                     connection.send_command("erase running-config")
                     # TODO
             else:
                 for host in range(0, len(ProgramConfig.host_list)):
-                    output = ''
-                    connection = ConnectHandler(**ProgramConfig.default_conf, host=ProgramConfig.host_list.pop())
-                    hostname = connection.find_prompt()[:-1]
-                    logging.info(f"Connected to {hostname}")
-                    output_filename = os.path.join(current_time_dir, hostname)
-                    for config_object in ProgramConfig.all_configuration_objects:
-                        output+= config_object.text_divider
-                        output+= connection.send_command(config_object.ios_command)
-                    # if ProgramConfig.write_config_to_startup:
-                    #     logging.info('Saving running-config into startup-config')
-                    #     connection.send_command('write')
-                    # if ProgramConfig.show_running_config:
-                    #     output += "\n\n*** Gathering Running Configuration File Data ***\n"
-                    #     output += connection.send_command('show run', use_textfsm=True)
-                    # if ProgramConfig.show_vtp:
-                    #     output += "\n\n*** VTP Configuration ***\n"
-                    #     output += connection.send_command('show vtp status')
-                    # if ProgramConfig.show_vlan:
-                    #     output += "\n\n*** Data from flash:vlan.dat ***\n"
-                    #     output += connection.send_command('show vlan-switch')
-                    # if ProgramConfig.show_interfaces_brief:
-                    #     output += "\n\n*** Interfaces Configuration ***\n"
-                    #     output += connection.send_command('show ipv6 int br')
-                    # if ProgramConfig.show_dhcp:
-                    #     output += "\n\n*** DHCP Configuration ***\n"
-                    #     output += connection.send_command('show ip dhcp pool')
-                    #     output += connection.send_command('show ip dhcp binding')
-                    #     output += connection.send_command('show ip dhcp server statistics')
-                    if len(output) > 1:
-                        self.write_device_info_to_file(hostname, output, output_filename)
-                    else:
-                        logging.warning("No output returned. Did you toggle all debug flags off?")
-                    connection.disconnect()
-
-                self.zip_files(current_time_dir)
+                    if len(ProgramConfig.host_list[host].get()) > 1:
+                        debug_files_exists = True
+                        output = ''
+                        connection = ConnectHandler(
+                            **ProgramConfig.default_conf,
+                            host=ProgramConfig.host_list[host].get()
+                        )
+                        hostname = connection.find_prompt()[:-1]
+                        logging.info(f"Connected to {hostname}")
+                        output_filename = os.path.join(current_time_dir, hostname)
+                        for config_object in ProgramConfig.all_configuration_objects:
+                            output += str(config_object.text_divider)
+                            output += connection.send_command(config_object.ios_command)
+                        if len(output) > 1:
+                            self.write_device_info_to_file(hostname, output, output_filename)
+                        else:
+                            logging.warning("No output returned. Did you toggle all debug flags off?")
+                        connection.disconnect()
+                if debug_files_exists:
+                    self.zip_files(current_time_dir)
         else:
             logging.error("No hosts specified.")
 
