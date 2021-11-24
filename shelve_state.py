@@ -1,7 +1,7 @@
 import logging
 import shelve
 import state_handler
-
+from gui.component.state.checkboxes import CheckBoxes
 hosts = []
 FILENAME = "state.dat"
 FILENAME_VAR = FILENAME[:-4]
@@ -13,10 +13,10 @@ def init_shelve():
     logging.info("Initializing shelve for hosts, selected checkboxes and credentials")
     for i in (0, state_handler.ProgramConfig.host_list-1):
         d["host" + str(i)] = hosts[i]
-    for i in (0, len(state_handler.ProgramConfig.all_configuration_objects)):  # state_handler.ConfigCheckbox):
-        d["checkbox_state" + str(i)] = state_handler.ProgramConfig.all_configuration_objects[i]
-    d["cisco_username"] = state_handler.ProgramConfig.default_conf.get("username")
-    d["cisco_password"] = state_handler.ProgramConfig.default_conf.get("password")
+    for i in (0, len(CheckBoxes.all_configuration_objects)):  # state_handler.ConfigCheckbox):
+        d["checkbox_state" + str(i)] = CheckBoxes.all_configuration_objects[i]
+    d["username"] = state_handler.ProgramConfig.default_conf.get("username")
+    d["password"] = state_handler.ProgramConfig.default_conf.get("password")
 
     d.close()
     load_all_hosts()

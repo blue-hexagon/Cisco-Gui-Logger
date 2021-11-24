@@ -1,7 +1,7 @@
 from tkinter import *
 
 import state_handler
-from gui.component.config_panel import Checkbox
+from gui.component.checkbox_panel import Checkbox
 
 
 class ControlButtonPanel:

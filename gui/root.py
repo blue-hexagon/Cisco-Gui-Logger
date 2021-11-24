@@ -3,7 +3,7 @@ from tkinter import *
 
 import shelve_state
 from cisco_director import *
-from gui.component.config_panel import ConfigPanel
+from gui.component.checkbox_panel import CheckboxPanel
 from gui.component.control_panel import ControlButtonPanel
 from gui.component.host_panel import HostPanel
 from gui.component.io_panel import IOPanel
@@ -32,11 +32,11 @@ class TkinterInitializer:
 
         self.statusbar = Statusbar(self.statusbar_panel)
         self.menubar = Menubar(self.root)
-        self.checkbox_panel = ConfigPanel(self.config_panel, self.statusbar)
+        self.checkbox_panel = CheckboxPanel(self.config_panel, self.statusbar)
         self.control_button_panel = ControlButtonPanel(self.config_panel)
         self.hosts_panel = HostPanel(self.hosts_panel, self.program_config, self.device_manager, 13)
         self.io_panel = IOPanel(self.logging_panel)
-        if True:
+        if False:
             if not path.exists(shelve_state.FILENAME + ".dir"):
                 shelve_state.init_shelve()
             else:
