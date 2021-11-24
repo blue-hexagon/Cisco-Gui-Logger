@@ -8,6 +8,7 @@ from datetime import date
 from datetime import datetime
 from zipfile import ZipFile
 
+import state_handler
 from state_handler import ProgramConfig
 
 
@@ -49,25 +50,30 @@ class DeviceManager:
         if len(ProgramConfig.host_list) > 0:
             if ProgramConfig.erase_equipment:
                 for host in range(0, len(ProgramConfig.host_list)):
-                    # TODO
-                    connection = ConnectHandler(**ProgramConfig.default_conf, host=ProgramConfig.host_list[host])
-                    connection.send_command("erase running-config")
-                    # TODO
+                    if len(ProgramConfig.host_list[host].get()) > 1:
+                        connection = ConnectHandler(**ProgramConfig.default_conf, host=ProgramConfig.host_list[host])
+                        connection.send_command("erase running-config")
+                        logging.warning(f"Erasing startup-config on: {host}")
             else:
                 for host in range(0, len(ProgramConfig.host_list)):
                     if len(ProgramConfig.host_list[host].get()) > 1:
                         debug_files_exists = True
-                        output = ''
+                        output = str()
+
                         connection = ConnectHandler(
-                            **ProgramConfig.default_conf,
+                            device_type=ProgramConfig.default_conf.get("device_type"),
+                            username=ProgramConfig.default_conf.get("username").get(),
+                            password=ProgramConfig.default_conf.get("password").get(),
                             host=ProgramConfig.host_list[host].get()
                         )
                         hostname = connection.find_prompt()[:-1]
                         logging.info(f"Connected to {hostname}")
                         output_filename = os.path.join(current_time_dir, hostname)
                         for config_object in ProgramConfig.all_configuration_objects:
-                            output += str(config_object.text_divider)
+                            output += f"<h2 id='{str(config_object.btn_name).replace(' ','-').lower()}'>{config_object.text_divider}</h2>"
+                            output += f"<code class='codehilite'>"
                             output += connection.send_command(config_object.ios_command)
+                            output += "\n</code>\n"
                         if len(output) > 1:
                             self.write_device_info_to_file(hostname, output, output_filename)
                         else:

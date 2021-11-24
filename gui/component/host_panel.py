@@ -9,7 +9,7 @@ class HostPanel:
         self.string_vars = []
         for i in range(0, hosts_length):
             state_handler.ProgramConfig.host_list.append(StringVar())
-            print(i,state_handler.ProgramConfig.host_list[i],state_handler.ProgramConfig.host_list)
+            #print(i,state_handler.ProgramConfig.host_list[i],state_handler.ProgramConfig.host_list)
             host = Entry(panel, width=20, relief=GROOVE, textvariable=state_handler.ProgramConfig.host_list[i])
             host.grid(column=0, row=i + 1, ipady=3, pady=1, padx=3)
             btn = Button(panel, text="Run", relief=GROOVE, command=cisco_manager.run_single)

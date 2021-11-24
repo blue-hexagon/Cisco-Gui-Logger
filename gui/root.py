@@ -1,5 +1,7 @@
+from os import path
 from tkinter import *
 
+import shelve_state
 from cisco_director import *
 from gui.component.config_panel import ConfigPanel
 from gui.component.control_panel import ControlButtonPanel
@@ -34,5 +36,9 @@ class TkinterInitializer:
         self.control_button_panel = ControlButtonPanel(self.config_panel)
         self.hosts_panel = HostPanel(self.hosts_panel, self.program_config, self.device_manager, 13)
         self.io_panel = IOPanel(self.logging_panel)
-
+        if True:
+            if not path.exists(shelve_state.FILENAME + ".dir"):
+                shelve_state.init_shelve()
+            else:
+                shelve_state.load_all_hosts()
         self.root.mainloop()

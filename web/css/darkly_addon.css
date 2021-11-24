@@ -1,0 +1,204 @@
+html {
+    /*scroll-padding-top: 56px;*/
+}
+
+body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+}
+
+:root {
+    --extradark: #272822;
+}
+
+.results {
+    color: #adb5bd;
+}
+
+.current-result {
+    /*background: #9b9b9b;*/
+    /*color: #030303;*/
+    border: solid;
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: #3498DB;
+}
+
+::selection {
+    background: #444;
+    color: #20c997;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #a4a4a4;
+    border-radius: 1px;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    /*box-shadow: inset 0 0 5px grey;*/
+    border-radius: 2px;
+}
+
+.logo-font {
+    font-family: 'Damion', cursive;
+    font-weight: 300;
+    line-height: 100%;
+}
+
+.modal-content iframe {
+    margin: auto auto;
+    display: block;
+}
+
+.modal-dialog-80,
+.modal-content-80 {
+    height: 80%;
+}
+
+.modal-open {
+    /*padding-*/
+    /*padding-left: 16px !important;*/
+    /*padding-right: 16px !important;*/
+    /*overflow: scroll !important;*/
+}
+
+.collapsable {
+    position: relative;
+
+}
+
+/*.collapse-icon {*/
+/*    position: absolute;*/
+/*    top: 1.5rem;*/
+/*    right: 0.5rem;*/
+/*}*/
+/**/
+/*.maximize-icon {*/
+/*    position: absolute;*/
+/*    top: 1.5rem;*/
+/*    right: 2.5rem;*/
+/*}*/
+
+/*.collapse-icon-header {*/
+/*    position: absolute;*/
+/*    top: 2.3rem;*/
+/*    right: 1rem;*/
+/*}*/
+
+
+@media (max-width: 768px) {
+    .var-width-nav-items {
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .var-width-nav-items {
+        min-width: 50%;
+        max-width: 50%;
+    }
+}
+
+
+.patterned {
+    background-color: #000000;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='105' viewBox='0 0 80 105'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='death-star' fill='%23375a7f' fill-opacity='0.38'%3E%3Cpath d='M20 10a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm15 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zM20 75a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zm30-65a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm0 65a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zM35 10a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zM5 45a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zm60 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.card-title {
+    font-family: 'Inter', sans-serif;
+}
+
+p.card-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.05ex;
+    color: #dddddd;
+}
+
+table p {
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+.contact-us {
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+.hyphenate {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}
+
+
+h1 {
+    font-weight: 300 !important;
+    line-height: 1.2 !important;
+}
+
+.popover {
+    background-color: #303030;
+    width: 280px;
+    border: #555 solid thin;
+
+}
+
+.popover .arrow {
+    display: none;
+}
+
+@media all and (max-width: 600px) {
+    .cheatsheet-grid {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+}
+
+@media all and (min-width: 600px) {
+    .cheatsheet-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
+        column-gap: 1.15ex;
+        grid-auto-flow: dense;
+    }
+}
+
+@media all and (max-width: 600px) {
+    .userprofile-grid {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+}
+
+@media all and (min-width: 600px) {
+    .userprofile-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
+        column-gap: 1.15ex;
+        grid-auto-flow: dense;
+    }
+}
+
+.rounded-box {
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 8px;
+}
+
+.info-box > p > code {
+    color: var(--white);
+    padding: 5px;
+    border-radius: 1ex;
+    background: var(--dark);
+}

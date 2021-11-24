@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from tkinter import StringVar
 from typing import List, Optional
 from enum import Enum, auto
 
@@ -15,7 +16,8 @@ class ConfigCheckbox:
 class ProgramConfig:
     log_to_file = False  # Toggle flag - logs to stdout if not to file.
     erase_equipment = False  # TODO : Make the user type in a diceware password or something...
-    all_configuration_objects: List = []
+    all_configuration_objects = []
+
     write_config_to_startup = ConfigCheckbox(btn_name="Copy run start",
                                              help_text="Copy the running configuration into the startup configuration",
                                              activated=False,
@@ -145,9 +147,9 @@ class ProgramConfig:
     all_configuration_objects.append(show_interfaces_brief)
     default_conf = {
         'device_type': 'cisco_ios',
-        'username': 'admin',
-        'password': 'admin',
-        #'port': 22,
+        'username': None,
+        'password': None,
+        'port': 22,
         # 'secret': 'secret',  # optional, defaults to ''
     }
 
