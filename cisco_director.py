@@ -80,14 +80,14 @@ class DeviceManager:
                         for config_object in CheckBoxes.all_configuration_objects:
                             output += f"<h2 id='{str(config_object.btn_name).replace(' ', '-').lower()}'>{config_object.html_heading}</h2>"
                             navbar += f"<a class='btn btn-outline-secondary text-white px-3 py-1 my-1' href='#{str(config_object.btn_name).replace(' ', '-').lower()}'>{config_object.html_heading}</a>"
-                            output += f"<pre><code class='language-html'>"
+                            output += f"<div class='border border-light rounded'><pre><code class='language-html'>"
                             output += connection.send_command(config_object.ios_command).replace("<", "&#60").replace(
                                 ">", "&#62")
-                            output += "\n</code></pre>\n"
+                            output += "\n</code></pre></div>\n"
                         if len(output) > 1:
                             self.write_device_info_to_file(hostname, output, output_filename)
                         else:
-                            logging.warning("No output returned. All checkboxes are probably unchecked.")
+                            logging.warning("No output returned (all checkboxes are probably unchecked)")
                         connection.disconnect()
                 if debug_files_exists:
                     self.zip_files_and_render_templates(current_time_dir, navbar)
@@ -97,10 +97,8 @@ class DeviceManager:
     @staticmethod
     def write_device_info_to_file(hostname, output, output_filename):
         logging.info(f'Writing output to file {hostname}')
-        try:
-            f = open(output_filename, 'w')
+        with open(output_filename, 'w') as f:
             f.write(output)
-            f.close()
         except IOError:
             logging.error(f"Failed writing output to: {output_filename}")
 
@@ -127,7 +125,7 @@ class DeviceManager:
     @staticmethod
     def render_template(cdc_output,navbar, hostname: str, filepath: str):
         env = Environment(loader=FileSystemLoader('web/templates/base'))
-        template = env.get_template('base.html')  # TODO: change base.html to a better name
+        template = env.get_template('template.html')
         output_from_parsed_template = template.render(navbar=navbar, cdc_output=cdc_output)
         with open(f"{os.path.dirname(filepath)}/{hostname.strip('-')}.html", "w+",
                   encoding="utf-8") as device_html_page:

@@ -28,13 +28,13 @@ def load_all_hosts():
         try:
             hosts.append(d["host" + str(i)])
         except KeyError:
-            logging.error(f"KeyError - failed to get host: host{str(i)}")
+            logging.error(f"KeyError: failed to get host{str(i)}")
     try:
         state_handler.ProgramConfig.default_conf["username"] = d["username"]
         state_handler.ProgramConfig.default_conf["password"] = d["password"]
     except KeyError:
-        logging.error(f"KeyError - failed to get username")
-        logging.error(f"KeyError - failed to get password")
+        logging.error(f"KeyError: failed to get username")
+        logging.error(f"KeyError: failed to get password")
     d.close()
 
 
