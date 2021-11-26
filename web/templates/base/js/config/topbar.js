@@ -1,4 +1,4 @@
-topbar.config({
+åtopbar.config({
     autoRun: true,
     barThickness: 5,
     barColors: {

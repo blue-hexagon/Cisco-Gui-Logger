@@ -1,6 +1,7 @@
 from tkinter import *
-
+from tkinter.tix import *
 import state_handler
+from shelve_state import update_single_host
 
 
 class HostPanel:

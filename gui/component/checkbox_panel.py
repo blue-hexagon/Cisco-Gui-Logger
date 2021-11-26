@@ -1,8 +1,8 @@
 import logging
 from tkinter import *
+from tkinter import ttk
 
 from gui.component.state.checkboxes import CheckBoxes
-from state_handler import ProgramConfig as PC
 
 
 class Checkbox:
@@ -46,6 +46,8 @@ class CheckboxPanel:
         grid2.grid(column=1, row=0, sticky="ns")
         grid3 = PanedWindow(config_panel)
         grid3.grid(column=2, row=0, sticky="ns")
+
+
         for idx, checkbox in enumerate(CheckBoxes.all_configuration_objects):
             if idx <= COLUMN_SIZE:
                 grid = grid1
@@ -54,3 +56,4 @@ class CheckboxPanel:
             elif idx <= COLUMN_SIZE * 3:
                 grid = grid3
             Checkbox(grid, checkbox.activated, checkbox.btn_name, checkbox.help_text, 0, idx % (COLUMN_SIZE + 1))
+

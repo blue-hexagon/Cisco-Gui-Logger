@@ -1,12 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
-#from gui.component.state.checkboxes import CheckBoxes
-
-
-
-
-class ProgramConfig():
+class ProgramConfig:
+    HOSTS_AMOUNT = 13
     host_list = []
     log_to_file = False  # Toggle flag: logs to stdout if not to file.
     erase_equipment = False  # TODO : Make the user type in a diceware password or something

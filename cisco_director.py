@@ -1,3 +1,4 @@
+from distutils.dir_util import copy_tree
 from os.path import basename
 
 from netmiko import *
@@ -7,8 +8,14 @@ import logging
 from datetime import date
 from datetime import datetime
 from zipfile import ZipFile
+import logging
+import os
+import sys
 
+from jinja2 import *
+from distutils.dir_util import copy_tree
 import state_handler
+from gui.component.state.checkboxes import CheckBoxes
 from state_handler import ProgramConfig
 
 
@@ -55,6 +62,7 @@ class DeviceManager:
                         connection.send_command("erase running-config")
                         logging.warning(f"Erasing startup-config on: {host}")
             else:
+                navbar = str()
                 for host in range(0, len(ProgramConfig.host_list)):
                     if len(ProgramConfig.host_list[host].get()) > 1:
                         debug_files_exists = True
@@ -69,18 +77,20 @@ class DeviceManager:
                         hostname = connection.find_prompt()[:-1]
                         logging.info(f"Connected to {hostname}")
                         output_filename = os.path.join(current_time_dir, hostname)
-                        for config_object in ProgramConfig.all_configuration_objects:
-                            output += f"<h2 id='{str(config_object.btn_name).replace(' ','-').lower()}'>{config_object.text_divider}</h2>"
-                            output += f"<code class='codehilite'>"
-                            output += connection.send_command(config_object.ios_command)
-                            output += "\n</code>\n"
+                        for config_object in CheckBoxes.all_configuration_objects:
+                            output += f"<h2 id='{str(config_object.btn_name).replace(' ', '-').lower()}'>{config_object.html_heading}</h2>"
+                            navbar += f"<a class='btn btn-outline-secondary text-white px-3 py-1 my-1' href='#{str(config_object.btn_name).replace(' ', '-').lower()}'>{config_object.html_heading}</a>"
+                            output += f"<pre><code class='language-html'>"
+                            output += connection.send_command(config_object.ios_command).replace("<", "&#60").replace(
+                                ">", "&#62")
+                            output += "\n</code></pre>\n"
                         if len(output) > 1:
                             self.write_device_info_to_file(hostname, output, output_filename)
                         else:
-                            logging.warning("No output returned. Did you toggle all debug flags off?")
+                            logging.warning("No output returned. All checkboxes are probably unchecked.")
                         connection.disconnect()
                 if debug_files_exists:
-                    self.zip_files(current_time_dir)
+                    self.zip_files_and_render_templates(current_time_dir, navbar)
         else:
             logging.error("No hosts specified.")
 
@@ -95,14 +105,30 @@ class DeviceManager:
             logging.error(f"Failed writing output to: {output_filename}")
 
     @staticmethod
-    def zip_files(current_time_dir):
+    def zip_files_and_render_templates(current_time_dir, navbar):
         file_paths = []
         zip_dir = current_time_dir
+
+        copy_tree("web/templates/base/css", f"{current_time_dir}/css")
+        copy_tree("web/templates/base/js", f"{current_time_dir}/js")
+
         for root, directories, files in os.walk(zip_dir):
             for filename in files:
                 filepath = os.path.join(root, filename)
+                with open(filepath, 'r') as file:
+                    data = file.read()
+                    DeviceManager.render_template(data, navbar, filename, filepath)
                 file_paths.append(filepath)
         with ZipFile(os.path.join(current_time_dir, 'files.zip'), 'w') as zip_file:
             for file in file_paths:
                 logging.info(f"Adding {file} to the zip archive.")
                 zip_file.write(file, arcname=basename(file) + '.txt')
+
+    @staticmethod
+    def render_template(cdc_output,navbar, hostname: str, filepath: str):
+        env = Environment(loader=FileSystemLoader('web/templates/base'))
+        template = env.get_template('base.html')  # TODO: change base.html to a better name
+        output_from_parsed_template = template.render(navbar=navbar, cdc_output=cdc_output)
+        with open(f"{os.path.dirname(filepath)}/{hostname.strip('-')}.html", "w+",
+                  encoding="utf-8") as device_html_page:
+            device_html_page.write(output_from_parsed_template)

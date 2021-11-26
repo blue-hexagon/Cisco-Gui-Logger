@@ -1,9 +1,14 @@
 html {
     /*scroll-padding-top: 56px;*/
+    scroll-behavior: smooth;
 }
 
 body {
     font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+}
+
+#mySidenav {
+
 }
 
 :root {
@@ -201,4 +206,133 @@ h1 {
     padding: 5px;
     border-radius: 1ex;
     background: var(--dark);
+}
+
+/*body {*/
+/*    counter-reset: h2*/
+/*}*/
+
+/*h2 {*/
+/*    counter-reset: h3*/
+/*}*/
+
+/*h3 {*/
+/*    counter-reset: h4*/
+/*}*/
+
+/*h4 {*/
+/*    counter-reset: h5*/
+/*}*/
+
+/*h5 {*/
+/*    counter-reset: h6*/
+/*}*/
+
+/*h2:before {*/
+/*    counter-increment: h2;*/
+/*    content: counter(h2) ". "*/
+/*}*/
+
+/*h3:before {*/
+/*    counter-increment: h3;*/
+/*    content: counter(h2) "." counter(h3) ". "*/
+/*}*/
+
+/*h4:before {*/
+/*    counter-increment: h4;*/
+/*    content: counter(h2) "." counter(h3) "." counter(h4) ". "*/
+/*}*/
+
+/*h5:before {*/
+/*    counter-increment: h5;*/
+/*    content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) ". "*/
+/*}*/
+
+/*h6:before {*/
+/*    counter-increment: h6;*/
+/*    content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) ". "*/
+/*}*/
+
+/*h2.nocount:before, h3.nocount:before, h4.nocount:before, h5.nocount:before, h6.nocount:before {*/
+/*    content: "";*/
+/*    counter-increment: none*/
+/*}*/
+
+h2 {
+    text-underline: #00efb2;
+    text-decoration: underline;
+    width: 100%;
+}
+
+h2:after {
+    content: "☤";
+    float: right;
+}
+
+mark {
+    background: #00efb2;
+    line-height: 0.5;
+    padding: 2px 0;
+
+}
+mark:nth-child(odd) {
+    background: #00c997;
+}
+
+.no-odd-childs mark {
+    background: #00efb2;
+}
+
+samp {
+    background: #444444;
+    line-height: 0.5;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    padding: 2px 0;
+    /*border-radius: 4px;*/
+    letter-spacing: 1px;
+    word-spacing: 1px;
+
+}
+
+blockquote {
+    padding: 1em 2em;
+    background: #303030; /**/
+    border-radius: 1ex;
+    font-kerning: auto;
+    /*font-weight: 500;*/
+}
+
+blockquote footer {
+    color: #888;
+}
+
+dfn {
+    text-decoration-line: underline;
+}
+
+p, .lead, .small {
+    word-spacing: 0.2em;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+    -webkit-hyphenate-limit-chars: 5 2 3; /*Suggested limits from "The Elements of Typograhic Style*/
+    -moz-hyphenate-limit-chars: 5 2 3; /*Suggested limits from "The Elements of Typograhic Style*/
+    -ms-hyphenate-limit-chars: 5 2 3; /*Suggested limits from "The Elements of Typograhic Style*/
+    hyphenate-limit-chars: 5 2 3; /*Suggested limits from "The Elements of Typograhic Style*/
+
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.no-hyphenate {
+    overflow-wrap: unset;
+    word-wrap: unset;
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
+    -moz-hyphens: none;
+    hyphens: none;
 }
