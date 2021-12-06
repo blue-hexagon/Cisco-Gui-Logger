@@ -99,8 +99,8 @@ class DeviceManager:
         logging.info(f'Writing output to file {hostname}')
         with open(output_filename, 'w') as f:
             f.write(output)
-        except IOError:
-            logging.error(f"Failed writing output to: {output_filename}")
+        # except IOError:
+        #     logging.error(f"Failed writing output to: {output_filename}")
 
     @staticmethod
     def zip_files_and_render_templates(current_time_dir, navbar):
